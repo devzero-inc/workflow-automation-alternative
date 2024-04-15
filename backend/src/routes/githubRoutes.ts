@@ -5,6 +5,7 @@ import {
   AccessDeniedError,
   NotFound,
 } from "../errors/octokitErrors";
+import authRoutes from './authRoutes';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,6 +13,8 @@ const router = Router();
 
 // this token will be replaced by the token from the user later
 const accessToken = process.env.GITHUB_TOKEN as string;
+
+router.use('/auth', authRoutes);
 
 router.get("/repos", async (req, res) => {
   try {

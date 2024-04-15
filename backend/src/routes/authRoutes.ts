@@ -2,7 +2,7 @@ import { Router } from "express";
 import axios from "axios";
 const router = Router();
 
-router.get("/github", (req, res) => {
+router.get("/signin", (req, res) => {
   try {
     // this will be taken from user input later
     const clientId = process.env.GITHUB_CLIENT_ID;
@@ -24,7 +24,7 @@ router.get("/github", (req, res) => {
   }
 });
 
-router.get("/github/callback", async (req, res) => {
+router.get("/signin/callback", async (req, res) => {
   
   try {
     const code = req.query.code;
@@ -51,7 +51,7 @@ router.get("/github/callback", async (req, res) => {
 
     // this will be persisted in memory for later use
     const accessToken = response.data.access_token;
-    console.log(accessToken);
+    
     res.status(200).send("Successfully signed in with GitHub.");
   } catch (error) {
     console.error(error);
