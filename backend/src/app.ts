@@ -1,6 +1,6 @@
 import express from 'express';
 import githubRoutes from './routes/githubRoutes';
-import monitorIssues from './scripts/monitorIssues';
+import monitorIssues from './polling/monitorIssues';
 import tokenStore from './store/tokenStore';
 import issuesStore from './store/issueStore';
 import userStore from './store/userStore';
