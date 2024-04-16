@@ -1,8 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import IconSearch from "../assets/icons/search";
+import { useNavigate } from "react-router-dom";
 
 const Flows = () => {
+
+  const navigate = useNavigate(); 
+
   return (
     <div
       css={css({
@@ -74,6 +78,7 @@ const Flows = () => {
                 backgroundColor: "#674c9f",
               },
             })}
+            onClick={() => navigate("/add-flow")}
           >
             Create Flow
           </button>
