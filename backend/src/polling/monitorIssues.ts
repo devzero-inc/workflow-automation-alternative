@@ -26,7 +26,7 @@ const monitorIssues = async (owner: string, repo: string) => {
       return;
     }
     for(const issue of newIssues) {
-      await createComment(owner, repo, issue.number, "Thanks", accessToken)
+      await createComment(owner, repo, issue.number, "Thank you for your submission! A team member will review this shortly", accessToken)
     }
     issuesStore.setIssues(issuesWithOwnerAndRepo);
   } catch (error) {
