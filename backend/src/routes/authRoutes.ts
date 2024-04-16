@@ -1,16 +1,24 @@
 import { Router } from "express";
 import axios from "axios";
+import tokenStore from "../store/tokenStore";
+import userStore from "../store/userStore";
 const router = Router();
 
 router.get("/signin", (req, res) => {
   try {
-    // this will be taken from user input later
-    const clientId = process.env.GITHUB_CLIENT_ID;
+    
+    const clientId = req.query.clientId;
+    const clientSecret = req.query.clientSecret;
+
     if(!clientId){
       res.status(400).json({message: "No client id found."})
     }
+
+    userStore.setClientId(clientId as string);
+    userStore.setClientSecret(clientSecret as string);
+
     const redirectUri = encodeURIComponent(
-      "http://localhost:3000/auth/github/callback"
+      "http://localhost:3000/github/auth/signin/callback"
     );
     const scopes = encodeURIComponent(
       "repo,admin:org,admin:public_key,admin:repo_hook,admin:org_hook,gist,user,delete_repo,write:packages,read:packages,delete:packages,admin:gpg_key,workflow,repository_projects:read"
@@ -31,9 +39,9 @@ router.get("/signin/callback", async (req, res) => {
     if (!code) {
       res.status(400).json({ message: "No code found." });
     }
-    // these will be taken from user input later
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+    const clientId = userStore.getClientId();
+    const clientSecret = userStore.getClientSecret();
   
     if(!clientId || !clientSecret){
       res.status(400).json({message: "No client id or client secret found."})
@@ -49,9 +57,9 @@ router.get("/signin/callback", async (req, res) => {
       { headers: { Accept: "application/json" } }
     );
 
-    // this will be persisted in memory for later use
     const accessToken = response.data.access_token;
-    
+    tokenStore.setToken(accessToken);
+
     res.status(200).send("Successfully signed in with GitHub.");
   } catch (error) {
     console.error(error);
