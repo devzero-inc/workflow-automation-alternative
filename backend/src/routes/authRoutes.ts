@@ -2,6 +2,7 @@ import { Router } from "express";
 import axios from "axios";
 import tokenStore from "../store/tokenStore";
 import userStore from "../store/userStore";
+import { getAuthUser } from "../services/githubService";
 const router = Router();
 
 router.get("/signin", (req, res) => {
@@ -23,9 +24,10 @@ router.get("/signin", (req, res) => {
     const scopes = encodeURIComponent(
       "repo,admin:org,admin:public_key,admin:repo_hook,admin:org_hook,gist,user,delete_repo,write:packages,read:packages,delete:packages,admin:gpg_key,workflow,repository_projects:read"
     );
-    res.redirect(
-      `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`
-    );
+
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
+
+    res.status(200).json({ url: authUrl });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error.");
@@ -59,6 +61,9 @@ router.get("/signin/callback", async (req, res) => {
 
     const accessToken = response.data.access_token;
     tokenStore.setToken(accessToken);
+
+    const user = await getAuthUser(accessToken);
+    userStore.setOwner(user.login);
 
     res.status(200).send("Successfully signed in with GitHub.");
   } catch (error) {

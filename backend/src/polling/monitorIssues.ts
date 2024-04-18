@@ -2,7 +2,7 @@ import tokenStore from "../store/tokenStore";
 import issuesStore from "../store/issueStore";
 import { fetchIssues, createComment } from "../services/githubService";
 
-const monitorIssues = async (owner: string, repo: string) => {
+const monitorIssues = async (owner: string, repo: string, comment: string) => {
   try {
     const accessToken = tokenStore.getToken() as string;
     const fetchedIssues = await fetchIssues(owner, repo, accessToken);
@@ -26,9 +26,9 @@ const monitorIssues = async (owner: string, repo: string) => {
       return;
     }
     for(const issue of newIssues) {
-      await createComment(owner, repo, issue.number, "Thank you for your submission! A team member will review this shortly", accessToken)
+      await createComment(owner, repo, issue.number, comment, accessToken)
     }
-    issuesStore.setIssues(issuesWithOwnerAndRepo);
+    issuesStore.setIssues(issuesWithOwnerAndRepo, comment);
   } catch (error) {
     console.error("Error monitoring issues:", error);
   }
