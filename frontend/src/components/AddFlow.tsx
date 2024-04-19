@@ -109,7 +109,7 @@ const AddFlow = () => {
 
   const publishFlow = async () => {
     try {
-      const response = await storeIssues(triggerRepo, actionComment, flowName);
+      await storeIssues(triggerRepo, actionComment, flowName);
       alert("Flow published successfully!");
       navigate('/');
     } catch (error) {
