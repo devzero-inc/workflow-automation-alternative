@@ -1,4 +1,4 @@
-# Workflow Automation
+# Workflow Automation ![ workflow](https://github.com/devzero-inc/workflow-automation-alternative/actions/workflows/main.yml/badge.svg)
 ![Frontend](https://github.com/devzero-inc/workflow-automation-alternative/assets/93814858/ed844903-187a-487b-9353-785fb72819d8)
 
 This tool is designed to streamline your GitHub workflow by providing a user-friendly interface for managing repositories, issues, and project tickets.
