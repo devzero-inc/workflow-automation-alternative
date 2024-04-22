@@ -79,4 +79,24 @@ async function createComment(
   }
 }
 
-export { fetchUserRepos, fetchIssues, createComment };
+const getAuthUser = async (accessToken: string) => {
+  const octokit = new Octokit({ auth: accessToken });
+  try {
+    const response = await octokit.rest.users.getAuthenticated();
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching authenticated user:", error);
+    if ((error as RequestError).status === 401) {
+      throw new NotAuthenticatedError("Not authenticated.");
+    } else if ((error as RequestError).status === 403) {
+      throw new AccessDeniedError("Access denied.");
+    } else if ((error as RequestError).status === 404) {
+      throw new NotFound("Not found.");
+    } else {
+      throw new UnhandledError("Unhandled error.");
+    }
+  }
+
+}
+
+export { fetchUserRepos, fetchIssues, createComment, getAuthUser };
