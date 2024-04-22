@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import IconSearch from "../assets/icons/search";
+import { useNavigate } from "react-router-dom";
 
 const MyApps = () => {
+  const navigate = useNavigate();
   return (
     <div
       css={css({
@@ -74,6 +76,7 @@ const MyApps = () => {
                 backgroundColor: "#674c9f",
               },
             })}
+            onClick={() => navigate("/add-flow")}
           >
             Add connection
           </button>

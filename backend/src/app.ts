@@ -15,7 +15,7 @@ const port = 3000;
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'http://localhost:4173'
 }));
 
 app.use('/github', githubRoutes);
@@ -34,7 +34,7 @@ setInterval(() => {
     } else {
         console.log("Waiting for valid access token and initial issues data...");
     }
-}, 3000);
+}, 60000);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
